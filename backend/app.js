@@ -1,14 +1,17 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-// import session from "express-session";
+
 import { userRoutes } from "./modules/routes/user-routes.js";
 import { createConnection } from "./shared/db/connection.js";
-// import { check_User } from "./modules/controllers/user-controller.js";
-import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 import { categoryRoutes } from "./modules/routes/category-routes.js";
 import { transactionRoutes } from "./modules/routes/transaction-routes.js";
+import { router } from "./modules/routes/dashboard-routes.js";
+import { targetRoutes } from "./modules/routes/target-routes.js";
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 dotenv.config();
 app.use(cors());
 app.use(express.json());
@@ -21,6 +24,9 @@ app.use(express.json());
 app.use("/", userRoutes);
 app.use("/", categoryRoutes);
 app.use("/", transactionRoutes);
+app.use("/", router);
+app.use("/", targetRoutes);
+
 const promise = createConnection();
 promise
 	.then(() => {

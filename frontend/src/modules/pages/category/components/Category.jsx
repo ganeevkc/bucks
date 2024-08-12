@@ -6,6 +6,8 @@ import { Header } from "../../../../shared/components/heading/Header";
 import { Footer } from "../../../../shared/components/footing/Footer";
 import { getCategoryApi } from "../../../../shared/services/api-category.js";
 // import { getCookie } from "../../../../../../backend/middlewares/authInterceptor.js";
+
+import axios from "axios";
 export const Category = () => {
 	const colors = [
 		"#EE4E4E",
@@ -78,6 +80,9 @@ export const Category = () => {
 		console.log(selectedExpenses); //['Food']
 		e.preventDefault();
 		try {
+			// const res = await axios.post(import.meta.env.VITE_TRANS_TWO_URL, {
+			// 	selectedExpenses,
+			// });
 			navigate("/Dashboard/Transactions");
 		} catch (error) {
 			console.error(error);

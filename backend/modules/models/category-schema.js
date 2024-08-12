@@ -8,12 +8,5 @@ const categorySchema = mongoose.Schema({
 		type: SchemaTypes.String,
 		// required: true,
 	},
-	// user_id: {
-	// 	type: SchemaTypes.ObjectId,
-	// 	// required: true,
-	// }, //
-	// custom_categories: {
-	// 	type: SchemaTypes.ObjectId,
-	// },
 });
 export const categoryModel = mongoose.model("categories", categorySchema);

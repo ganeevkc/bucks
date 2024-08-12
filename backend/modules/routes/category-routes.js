@@ -8,7 +8,7 @@ import isAuthenticated from "../../middlewares/auth.js";
 export const categoryRoutes = express.Router();
 // categoryRoutes.post("/add-category", create_Category);
 
-categoryRoutes.get("/get-category", isAuthenticated, get_Category); //func to check JWT auth
+categoryRoutes.get("/get-category", isAuthenticated, get_Category);
 categoryRoutes.post(
 	"/add-custom-category",
 	isAuthenticated,

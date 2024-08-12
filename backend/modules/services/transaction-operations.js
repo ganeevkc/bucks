@@ -9,11 +9,9 @@ export const add_transaction = async (doc) => {
 	}
 };
 // return !!user;
-export const get_transaction = async (id) => {
+export const get_transaction = async () => {
 	try {
-		console.log("hello");
-		const user = await transactionModel.findOne({ user_id: id });
-		console.log(user);
+		const user = await transactionModel.find();
 		return user;
 	} catch (err) {
 		throw err;
@@ -21,3 +19,7 @@ export const get_transaction = async (id) => {
 };
 // export const get_category_ids = async()=>
 // module.exports = add_transaction;
+export const addCategoryToTrans = async (category) => {
+	await transactionModel.selectedCategory.push(category[0]);
+	transactionModel.save();
+};

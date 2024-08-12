@@ -15,10 +15,10 @@ const userSchema = mongoose.Schema({
 		type: SchemaTypes.String,
 		required: true,
 	},
-	token: {
-		type: SchemaTypes.String,
-		default: null,
-	},
+	// token: {
+	// 	type: SchemaTypes.String,
+	// 	default: null,
+	// },
 	customCategories: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

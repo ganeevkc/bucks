@@ -31,7 +31,6 @@ export const getCategoryApi = async (info) => {
 			{
 				headers: {
 					"Content-Type": "application/json",
-					// "Set-Cookie": `token=${token}`,
 					Authorization: `Bearer ${token}`,
 				},
 			}

@@ -18,14 +18,20 @@ const transactionSchema = mongoose.Schema({
 		type: SchemaTypes.Date,
 		required: true,
 	},
-	user_id: {
-		type: SchemaTypes.ObjectId,
-		required: true,
-	},
-	category_id: {
-		type: SchemaTypes.ObjectId,
-		required: true,
-	},
+	// user_id: {
+	// 	type: SchemaTypes.ObjectId,
+	// 	required: true,
+	// },
+	// category_id: {
+	// 	type: SchemaTypes.ObjectId,
+	// 	required: true,
+	// },
+	selectedCategory: [
+		{
+			type: mongoose.SchemaTypes.String,
+			// ref: "category",
+		},
+	],
 });
 export const transactionModel = mongoose.model(
 	"transactions",

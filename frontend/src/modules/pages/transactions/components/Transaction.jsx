@@ -1,124 +1,100 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, message, Table } from "antd";
-// import axios from "axios";
-import { getTransApi } from "../../../../shared/services/api-trans.js";
-import { Header } from "../../../../shared/components/heading/Header.jsx";
-import { Footer } from "../../../../shared/components/footing/Footer.jsx";
-// import { getTransTwoApi } from "../../../../shared/services/api-trans-two.js";
-// import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+//Get UID imported from Login Pages class
+//DO NOT touch Backend or DB schema
+//Pass UiD in Get Transactions API Call from UI
+// import category_id from category
+
+//import { getApi } from '../../shared/services/api-client.js';
+//import { useNavigate } from 'react-router-dom';
+
+//const category_id="byee";
 export const Transaction = () => {
+	// const [value, setValue] = useState("");
 	const [showModal, setShowModal] = useState(false);
-	// const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [allTransaction, setAllTransaction] = useState([]);
-	// const [selectedExpenses] = useState(JSON.stringify(selectedExpenses)); // Replace with your actual state management
-	// const [categoryIds, setCategoryIds] = useState([]);
+	// const [inputValue, setInputValue] = useState('');
+	// const updateInputValue = () => {
+	//   setInputValue(category_id);
+	// };
+
 	const columns = [
 		{ title: "name", dataIndex: "name" },
 		{ title: "type", dataIndex: "type" },
 		{ title: "amount", dataIndex: "amount" },
 		{ title: "date_time", dataIndex: "date_time" },
+		{ title: "category_id", dataIndex: "category_id" },
 	];
 
 	const getAllTransaction = async () => {
-		// try {
-		// 	const user = JSON.parse(localStorage.getItem("user"));
-		// 	// setLoading(true);
-		// 	// const res = await axios.post("/transaction/get-transaction", {
-		// 	// 	user_id: user,
-		// 	// });
-		// 	const res = await getTransApi({
-		// 		user_id: user,
-		// 	});
-		// 	// setLoading(false);
-		// 	setAllTransaction(res.data);
-		// 	console.log(res.data);
-		// } catch (error) {
-		// 	console.log(error);
-		// 	message.error("fetch issue with transaction");
-		// }
-		// const { name, type, amount, date_time } =
-		// console.log();
+		try {
+			setLoading(true);
+			const res = await axios.get(import.meta.env.VITE_TRANS_URL);
+			console.log(res);
+			setLoading(false);
+			console.log("Here is the data " + res.data);
+			setAllTransaction(res.data ?? []);
+		} catch (error) {
+			console.log(error);
+			message.error("fetch issue with transaction");
+		}
 	};
 	useEffect(() => {
 		getAllTransaction();
 	}, []);
-	// useEffect(() => {
-	// 	const fetchCategoryIds = async () => {
-	// 		try {
-	// 			const res = await getTransTwoApi({ selectedExpenses });
-	// 			setCategoryIds(res.data);
-	// 		} catch (err) {
-	// 			console.error("Error fetching category IDs:", err);
-	// 		}
-	// 	};
-	// 	if (selectedExpenses.length > 0) {
-	// 		fetchCategoryIds();
-	// 	}
-	// }, [selectedExpenses]);
-	// const navigate = useNavigate();
+	//const navigate = useNavigate();
 	const handleSubmit = async (values) => {
 		try {
-			const user = JSON.parse(localStorage.getItem("user"));
-			console.log(user);
-			// setLoading(true);
-			// await axios.post("/transaction/add-transaction", {
-			// 	...values,
-			// 	user_id: user,
-			// });
-			const res = await getTransApi({
+			values.category_id = "Car Wash";
+			setLoading(true);
+			await axios.post(import.meta.env.VITE_TRANS_TWO_URL, {
 				...values,
-				user_id: user,
 			});
-			await res.save();
-			// setLoading(false);
+			setLoading(false);
 			message.success("Transaction Added Successfully");
 			setShowModal(false);
+			getAllTransaction();
 		} catch (error) {
-			// setLoading;
+			setLoading(false);
 			message.error("Failed to add transaction");
 		}
 	};
-	const handleSave = async (e) => {
-		e.preventDefault();
-		try {
-			// const response = await getApi({
-			// 	name,
-			// 	type,
-			// 	amount,
-			// 	date_time,
-			// });
-			const { name, type, amount, date_time } = JSON.parse(
-				localStorage.getItem("category")
-			);
-			const response = await getTransApi({
-				name,
-				type,
-				amount,
-				date_time,
-			});
-			console.log(response.data.message);
-			if (response.data.success) {
-				alert("Transaction Added.");
-				// navigate("/dashboard");
-			} else {
-				console.error("failed.");
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	// const handleSave = async (e) => {
+	// 	e.preventDefault();
+	// 	try {
+	// 		const response = await getApi({
+	// 	  name,
+	//     type,
+	//     amount,
+	//     date_time
+	// 		});
+	// 		console.log(response.data.message);
+	// 		if (response.data.success) {
+	// 			alert("Transaction Added.");
+	// 			// navigate("/dashboard");
+	// 		} else {
+	// 			console.error("failed.");
+	// 		}
+	// 	} catch (error) {
+	// 		console.error(error);
+	// 	}
+	// };
+	const val = "Add Transaction for ";
+	const greetings = "Hello!!";
+
 	return (
 		<div>
-			<Header />
 			<div className="filters">
-				<div>range filters</div>
+				<div>{greetings}</div>
 				<div>
 					<button
 						className="btn btn-primary"
 						onClick={() => setShowModal(true)}
 					>
-						Add New
+						add new
 					</button>
 				</div>
 			</div>
@@ -126,7 +102,7 @@ export const Transaction = () => {
 				<Table columns={columns} dataSource={allTransaction} />
 			</div>
 			<Modal
-				title="Add Transaction"
+				title={val}
 				open={showModal}
 				onCancel={() => setShowModal(false)}
 				footer={false}
@@ -138,7 +114,7 @@ export const Transaction = () => {
 					<Form.Item label="Type" name="type">
 						<Select initialvalue={"Select an option"}>
 							<Select.Option value="income">Income</Select.Option>
-							<Select.Option value="expense">
+							<Select.Option value="Expense">
 								Expense
 							</Select.Option>
 						</Select>
@@ -149,18 +125,22 @@ export const Transaction = () => {
 					<Form.Item label="Date" name="date_time">
 						<Input type="date" />
 					</Form.Item>
-
+					{/* <Form.Item label="uid" name="uid">
+            <Input type="text" />
+          </Form.Item> 
+          <Form.Item label="category_id" name="category_id">
+          <Input type="text" />
+          </Form.Item> */}
 					<div className="d-flex justify-content-end">
-						<form onSubmit={handleSave}>
-							<button type="submit" className="btn btn-primary">
-								{" "}
-								SAVE
-							</button>
-						</form>
+						{/* <form onSubmit={handleSave}> */}
+						<button type="submit" className="btn btn-primary">
+							{" "}
+							SAVE
+						</button>
+						{/* </form> */}
 					</div>
 				</Form>
 			</Modal>
-			{/* <Footer /> */}
 		</div>
 	);
 };
